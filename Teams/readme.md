@@ -2,42 +2,46 @@
 mindmap
   root((dev))
     )Run Team(
-      Rudolf 
+        ))Rudolf ((
       Vikta
       Dimitrios
       Matt
       James
-      Build
+      )Build(
         Junaid
         Ethan
         Neha 
 
     )Portal Squad(
-      Raquel
-      Pete
+        ))Raquel((
+      (Pete)
       Joao
       Bons
     )Integration Squad(
-      Thomas
-      Pete
+        ))Thomas((
+        
+      (Pete)
       Jorge
       Pauline
-      Mel
+      (Mel)
+      
     )Webeo<br> Squad(
-      Tony
+        ))Tony((
+        
       Blaze
       Isaac
       Ricardo
       Tim
-      Mike
+      (Mike Terry<br>PO)
     )Whizeo <br>Chat <br>Squad(
-      Mark
+        ))Mark((
+        
       Marek
       Dominik
       Krzysztof
       Francisco
     )Enabling(
-      Daryl
+        ))Daryl((
       Oliver
       Chris
     )QA(
