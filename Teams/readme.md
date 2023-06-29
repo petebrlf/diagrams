@@ -44,5 +44,3 @@ mindmap
       Emma
       Neha
       Tim
-    
-    ```
