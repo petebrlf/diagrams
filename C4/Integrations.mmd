@@ -1,0 +1,34 @@
+C4Context
+      title System Context diagram Integrations
+
+      Person(customerA, "Web visitor", "")
+      System(sysWebsite, "Internet website", "")
+      Rel(customerA, sysWebsite, "visits")
+
+      Enterprise_Boundary(b0, "Lead Forensics") {
+        
+
+          Component(Ipflow, "IPFLOW", "identifies vistors")
+          Rel(sysWebsite, Ipflow, "tracks")
+
+          ComponentDb(Snowflake, "Snowflake", "Store visit data")
+          Rel(Ipflow, Snowflake, "Stores")
+          Rel(Typhoon, Snowflake, "reads")
+
+          Component(Typhoon, "Typhoon", "Integrate with CRM systems")
+          
+        
+      }
+
+      Enterprise_Boundary(b1, "External CRMs") {
+        System_Ext(CrmHubspot, "Hubspot", "CRM for end client")
+        System_Ext(CrmSalesforce, "Salesforce", "CRM for end client")
+        System_Ext(CrmDynamics, "Dynamics", "CRM for end client")
+        Rel(Typhoon, CrmHubspot, "create")
+        Rel(Typhoon, CrmSalesforce, "create")
+        Rel(Typhoon, CrmDynamics, "create")
+      }
+
+      
+      
+      UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
