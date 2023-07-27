@@ -1,34 +1,50 @@
 C4Context
       title System Context diagram Integrations
-
-      Person(customerA, "Web visitor", "")
-      System(sysWebsite, "Internet website", "")
-      Rel(customerA, sysWebsite, "visits")
-
-      Enterprise_Boundary(b0, "Lead Forensics") {
+      ComponentQueue(visitFeed, "Visit Feed")
+      Rel(visitFeed, visitIngress, "sends")
+      System_Boundary(TyphoonSys, "Typhoon system"){
+        Component(visitIngress, "Visit ingress")
+        Component(visitIngress2, "")
         
+        ComponentQueue(visitReadyTopic, "Visit ready topic")
+        Rel(visitIngress, visitReadyTopic, "When ready")
 
-          Component(Ipflow, "IPFLOW", "identifies vistors")
-          Rel(sysWebsite, Ipflow, "tracks")
-
-          ComponentDb(Snowflake, "Snowflake", "Store visit data")
-          Rel(Ipflow, Snowflake, "Stores")
-          Rel(Typhoon, Snowflake, "reads")
-
-          Component(Typhoon, "Typhoon", "Integrate with CRM systems")
+        System_Boundary(intTyphoon, "Integration Typhoon mono repo"){
+          Component(mrVisitHandler, "visithandler")
+          Component(mrsteps, "step logic handler")
+          Rel(mrOrch, mrsteps, "")
+          Component(mrOrch, "orchestrator")
+            Rel(mrVisitHandler, mrOrch, "")
+          Component(mrDLQ, "DLQ processor")
+            
           
+          Component(mrauth, "auth handler")
+          Rel(mrOrch, mrauth, "uses")
+
+          
+        }
         
+        
+        Component(legVisitHandler, "Legacy visithandler")
+        Rel(visitReadyTopic, mrVisitHandler, "reads (feature flag)")
+        Rel(visitReadyTopic, legVisitHandler, "reads (feature flag)")
       }
 
-      Enterprise_Boundary(b1, "External CRMs") {
-        System_Ext(CrmHubspot, "Hubspot", "CRM for end client")
-        System_Ext(CrmSalesforce, "Salesforce", "CRM for end client")
-        System_Ext(CrmDynamics, "Dynamics", "CRM for end client")
-        Rel(Typhoon, CrmHubspot, "create")
-        Rel(Typhoon, CrmSalesforce, "create")
-        Rel(Typhoon, CrmDynamics, "create")
-      }
+     
 
-      
-      
-      UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+      System_Boundary(s0, ""){
+        Component(customjobs, "Custom jobs")
+        Component(logicApps, "Logic apps AZURE")
+        Component(blendr, "Blendr")
+
+        Rel(legVisitHandler, customjobs, "send")
+        Rel(legVisitHandler, logicApps, "send")
+        Rel(legVisitHandler, blendr, "send")
+        }
+
+ System_Boundary(dbs, "databases"){
+        ComponentDb(webinsightsDb, "Webinsights SQL")
+        ComponentDb(webForensicsDb, "Webforensics SQL")
+        Rel(mrOrch, webinsightsDb, "uses")
+        Rel(mrOrch, webForensicsDb, "uses")
+      }
